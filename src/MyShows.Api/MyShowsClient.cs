@@ -85,12 +85,22 @@ namespace MyShows.Api
             return Execute(request);
         }
 
-        public MyShowsResponse<ShowCollection>  ListOfShows()
+        public MyShowsResponse<ShowsCollection>  ListOfShows()
         {
             RestRequest request = new RestRequest(Methods.ListOfShows);
             MyShowsResponse<Dictionary<int, Show>> myShowsResponse = Execute<Dictionary<int, Show>>(request);
-            MyShowsResponse<ShowCollection> response = new MyShowsResponse<ShowCollection>(myShowsResponse.Response);
-            response.Data = new ShowCollection(myShowsResponse.Data);
+            MyShowsResponse<ShowsCollection> response = new MyShowsResponse<ShowsCollection>(myShowsResponse.Response);
+            response.Data = new ShowsCollection(myShowsResponse.Data);
+            return response;
+        }
+
+        public MyShowsResponse<WatchedEpisodesCollection> ListOfWatchedEpisodes(int showId)
+        {
+            RestRequest request = new RestRequest(Methods.ListOfWatchedEpisodes);
+            request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
+            MyShowsResponse<Dictionary<int, WatchedEpisode>> myShowsResponse = Execute<Dictionary<int, WatchedEpisode>>(request);
+            MyShowsResponse<WatchedEpisodesCollection> response = new MyShowsResponse<WatchedEpisodesCollection>(myShowsResponse.Response);
+            response.Data = new WatchedEpisodesCollection(myShowsResponse.Data);
             return response;
         }
     }

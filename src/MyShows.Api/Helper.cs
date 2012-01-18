@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -34,6 +36,15 @@ namespace MyShows.Api
         public static IList<T> ConvertToList<T>(Dictionary<int, T> dic)
         {
             return dic != null ? dic.Select(item => item.Value).ToList() : null;
+        }
+
+        public static DateTime? ParseDate(string stringdate)
+        {
+            const string format = "dd.MM.yyyy";
+            DateTime date;
+            if (!DateTime.TryParseExact(stringdate, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                return null;
+            return date;
         }
     }
 }

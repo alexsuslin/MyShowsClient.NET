@@ -44,13 +44,20 @@
   <ItemGroup>
     <Compile Include="Constants\Header.cs" />
     <Compile Include="Constants\Methods.cs" />
+    <Compile Include="Constants\Rating.cs" />
+    <Compile Include="Constants\ShowStatus.cs" />
+    <Compile Include="Constants\WatchStatus.cs" />
     <Compile Include="Constants\Status.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MyShowsClient.cs" />
     <Compile Include="Objects\Credentials.cs" />
+    <Compile Include="Objects\Episode.cs" />
+    <Compile Include="Objects\EpisodesCollection.cs" />
     <Compile Include="Objects\MyShowsResponse.cs" />
     <Compile Include="Objects\Show.cs" />
-    <Compile Include="Objects\ShowCollection.cs" />
+    <Compile Include="Objects\ShowsCollection.cs" />
+    <Compile Include="Objects\WatchedEpisode.cs" />
+    <Compile Include="Objects\WatchedEpisodesCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,12 +12,16 @@ namespace MyShows.Test
     public class ApiTests
     {
         private readonly Credentials credentials;
+        private readonly Credentials wrongCredentials;
         private readonly MyShowsClient Client;
+        private readonly MyShowsClient InvalidClient;
 
         public ApiTests()
         {
             credentials = new Credentials(Config.Username, Config.Password);
+            wrongCredentials = new Credentials("wrongusername", "wrongpassword");
             Client = new MyShowsClient(credentials);
+            InvalidClient = new MyShowsClient(wrongCredentials);
         }
 
         [TestInitialize]
@@ -34,20 +38,19 @@ namespace MyShows.Test
             response = Client.Auth(credentials);
             Assert.AreEqual(response.Status, Status.Success);
 
-            response = Client.Auth(new Credentials("wrongusername", "wrongpassword"));
+            response = Client.Auth(wrongCredentials);
             Assert.AreEqual(response.Status, Status.InvalidCredentials);
 
-            response = Client.Auth(new Credentials("", ""));
+            response = Client.Auth(new Credentials(string.Empty, string.Empty));
             Assert.AreEqual(response.Status, Status.NotFound);
         }
 
         [TestMethod]
         public void ListOfShows()
         {
+            MyShowsResponse<ShowsCollection> response;
 
-            MyShowsResponse<ShowCollection> response;
-
-            response = new MyShowsClient(new Credentials("wrongusername", "wrongpassword")).ListOfShows();
+            response = InvalidClient.ListOfShows();
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
 
             response = Client.ListOfShows();
@@ -57,7 +60,23 @@ namespace MyShows.Test
             {
                 Assert.IsNotNull(show);
             }
+        }
 
+        [TestMethod]
+        public void ListOfWatchedEpisodes()
+        {
+            MyShowsResponse<WatchedEpisodesCollection> response;
+            response = InvalidClient.ListOfWatchedEpisodes(1);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.ListOfWatchedEpisodes(1);
+            Assert.AreEqual(response.Status, Status.Success);
+            Assert.IsNotNull(response.Data);
+            foreach (WatchedEpisode episode in response.Data)
+            {
+                Assert.IsNotNull(episode);
+                Assert.IsNotNull(episode.WatchDate);
+            }
         }
     }
 }

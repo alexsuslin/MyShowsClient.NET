@@ -1,12 +1,25 @@
-﻿namespace MyShows.Api.Constants
+﻿using RestSharp;
+
+namespace MyShows.Api.Constants
 {
     internal struct Methods
     {
-        public static string ListOfShows = "/profile/shows/";
+        public const string ListOfShows = "/profile/shows/";
+        public static readonly string ListOfWatchedEpisodes = string.Format("/profile/shows/{{{0}}}/", Params.ShowId);
         public const string Auth = "profile/login";
 
         public struct Params
         {
+            public const string WatchDate = "watchDate";
+            public const string ShortName = "shortName";
+            public const string TVRageLink = "tvrageLink";
+            public const string Id = "id";
+            public const string SequenceNumber = "sequenceNumber";
+            public const string ProductionNumber = "productionNumber";
+            public const string AirDate = "airDate";
+            public const string EpisodeNumber = "episodeNumber";
+            public const string SeasonNumber = "seasonNumber";
+            public const string EpisodeId = "episodeId";
             public const string Image = "image";
             public const string Rating = "rating";
             public const string TotalEpisodes = "totalEpisodes";
@@ -20,6 +33,18 @@
             public const string ShowId = "showId";
             public const string Username = "login";
             public const string Password = "password";
+
+            public const string Watching = "watching";
+            public const string Later = "later";
+            public const string Cancelled = "cancelled";
+            public const string None = "remove";
+            public const string Finished = "finished";
+
+            public const string CanceledOrEnded = "Canceled/Ended";
+            public const string ReturiningSeries = "Returning Series";
+            public const string FinalSeason = "Final Season";
+            public const string NewSeries = "New Series";
+            public const string TBD = "TBD/On The Bubble";
         }
     }
 }
