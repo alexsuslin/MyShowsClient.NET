@@ -7,13 +7,18 @@ namespace MyShows.Api.Constants
         public const string ListOfShows = "profile/shows/";
         public static readonly string ListOfWatchedEpisodes = string.Format("profile/shows/{{{0}}}/", Params.ShowId);
         public static readonly string MarkAsWatched = string.Format("profile/episodes/check/{{{0}}}", Params.EpisodeId);
+        public static readonly string SyncMarkAsWatched = string.Format("profile/shows/{{{0}}}/sync", Params.ShowId);
         public static readonly string UnmarkAsWatched = string.Format("profile/episodes/uncheck/{{{0}}}", Params.EpisodeId);
+        public static readonly string Sync = string.Format("profile/shows/{{{0}}}/episodes", Params.ShowId);
         public const string ListOfPastEpisodes = "profile/episodes/unwatched/";
         public const string ListOfNextEpisodes = "profile/episodes/next/";
         public const string Auth = "profile/login";
 
         public struct Params
         {
+            public const string Check = "check";
+            public const string Uncheck = "uncheck";
+            public const string Episodes = "episodes";
             public const string WatchDate = "watchDate";
             public const string ShortName = "shortName";
             public const string TVRageLink = "tvrageLink";

@@ -46,5 +46,10 @@ namespace MyShows.Api
                 return null;
             return date;
         }
+
+        public static string ToCommaString(int[] episodes)
+        {
+            return string.Join(",", Array.ConvertAll(episodes, Convert.ToString));
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MyShows.Api.Constants;
 using MyShows.Api.Objects;
@@ -131,10 +132,27 @@ namespace MyShows.Api
             return Execute(request);
         }
 
+        public MyShowsResponse MarkAsWatched(int showId, params int[] episodes)
+        {
+            RestRequest request = new RestRequest(Methods.SyncMarkAsWatched);
+            request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.Episodes, Helper.ToCommaString(episodes));
+            return Execute(request);
+        }
+
         public MyShowsResponse UnmarkAsWatched(int episodeId)
         {
             RestRequest request = new RestRequest(Methods.UnmarkAsWatched);
             request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
+            return Execute(request);
+        }
+
+        public MyShowsResponse Sync(int showId, int[] watchedEpisodes, int[] unwatchedEpisodes)
+        {
+            RestRequest request = new RestRequest(Methods.Sync);
+            request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.Check, Helper.ToCommaString(watchedEpisodes));
+            request.AddParameter(Methods.Params.Uncheck, Helper.ToCommaString(unwatchedEpisodes));
             return Execute(request);
         }
     }

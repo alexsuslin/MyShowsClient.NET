@@ -120,6 +120,20 @@ namespace MyShows.Test
         }
 
         [TestMethod]
+        public void SyncMarkAsWatched()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.MarkAsWatched(142, 16388, 16387, 16386);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.MarkAsWatched(-1, 16388, 16387, 16386);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.MarkAsWatched(142, 16388, 16387, 16386);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
         public void UnmarkAsWatched()
         {
             MyShowsResponse response;
@@ -127,6 +141,20 @@ namespace MyShows.Test
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
 
             response = Client.UnmarkAsWatched(291461);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void SyncEpisodes()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.Sync(142, new[] {16388, 16387}, new[] {16386});
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.Sync(-1, new[] { 16388, 16387 }, new[] { 16386 });
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.Sync(142, new[] { 16388, 16387 }, new[] { 16386 });
             Assert.AreEqual(response.Status, Status.Success);
         }
     }
