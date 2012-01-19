@@ -1,6 +1,4 @@
-﻿using RestSharp;
-
-namespace MyShows.Api.Constants
+﻿namespace MyShows.Api.Constants
 {
     internal struct Methods
     {
@@ -13,7 +11,12 @@ namespace MyShows.Api.Constants
         public static readonly string SetShowStatus = string.Format("profile/shows/{{{0}}}/{{{1}}}", Params.ShowId, Params.ShowStatus);
         public static readonly string SetShowRating = string.Format("profile/shows/{{{0}}}/rate/{{{1}}}", Params.ShowId, Params.Rate);
         public static readonly string SetEpisodeRating = string.Format("profile/episodes/rate/{{{0}}}/{{{1}}}", Params.Rate, Params.EpisodeId);
+        public static readonly string AddEpisodeToFavorite = string.Format("profile/episodes/favorites/add/{{{0}}}", Params.EpisodeId);
+        public static readonly string RemoveEpisodeFromFavorite = string.Format("profile/episodes/favorites/remove/{{{0}}}", Params.EpisodeId);
         public const string GetFavoriteEpisodes = "profile/episodes/favorites/list/";
+        public static readonly string AddEpisodeToIgnored = string.Format("profile/episodes/ignored/add/{{{0}}}", Params.EpisodeId);
+        public static readonly string RemoveEpisodeFromIgnored = string.Format("profile/episodes/ignored/remove/{{{0}}}", Params.EpisodeId);
+        public const string GetIgnoredEpisodes = "profile/episodes/ignored/list/";
         public const string ListOfPastEpisodes = "profile/episodes/unwatched/";
         public const string ListOfNextEpisodes = "profile/episodes/next/";
         public const string Auth = "profile/login";

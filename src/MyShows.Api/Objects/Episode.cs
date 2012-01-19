@@ -28,9 +28,6 @@ namespace MyShows.Api.Objects
         [DataMember(Name = Methods.Params.SequenceNumber)]
         public int SequenceNumber { get; set; }
 
-        [DataMember(Name = Methods.Params.Id)]
-        public int Id { get; set; }
-
         [DataMember(Name = Methods.Params.TVRageLink)]
         public string TVRageLink { get; set; }
 

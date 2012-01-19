@@ -185,5 +185,41 @@ namespace MyShows.Api
             RestRequest request = new RestRequest(Methods.GetFavoriteEpisodes);
             return Execute<EpisodeIdsCollection>(request);
         }
+
+        public MyShowsResponse AddEpisodeToFavorite(int episodeId)
+        {
+            RestRequest request = new RestRequest(Methods.AddEpisodeToFavorite);
+            request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
+            return Execute(request);
+        }
+
+        public MyShowsResponse RemoveEpisodeFromFavorite(int episodeId)
+        {
+            RestRequest request = new RestRequest(Methods.RemoveEpisodeFromFavorite);
+            request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
+            return Execute(request);
+        }
+
+        public MyShowsResponse<EpisodeIdsCollection> GetIgnoredEpisodes()
+        {
+            RestRequest request = new RestRequest(Methods.GetIgnoredEpisodes);
+            return Execute<EpisodeIdsCollection>(request);
+        }
+
+        public MyShowsResponse AddEpisodeToIgnored(int episodeId)
+        {
+            RestRequest request = new RestRequest(Methods.AddEpisodeToIgnored);
+            request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
+            return Execute(request);
+        }
+
+        public MyShowsResponse RemoveEpisodeFromIgnored(int episodeId)
+        {
+            RestRequest request = new RestRequest(Methods.RemoveEpisodeFromIgnored);
+            request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
+            return Execute(request);
+        }
+
+
     }
 }

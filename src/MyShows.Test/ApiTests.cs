@@ -209,5 +209,72 @@ namespace MyShows.Test
             response = Client.GetFavoriteEpisodes();
             Assert.AreEqual(response.Status, Status.Success);
         }
+
+        [TestMethod]
+        public void AddEpisodeToFavorite()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.AddEpisodeToFavorite(291461);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.AddEpisodeToFavorite(-1);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.AddEpisodeToFavorite(291461);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void RemoveEpisodeFromFavorite()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.RemoveEpisodeFromFavorite(291461);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.RemoveEpisodeFromFavorite(-1);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.RemoveEpisodeFromFavorite(291461);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void GetIgnoredEpisodes()
+        {
+            MyShowsResponse<EpisodeIdsCollection> response;
+            response = InvalidClient.GetIgnoredEpisodes();
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.GetIgnoredEpisodes();
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void AddEpisodeToIgnored()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.AddEpisodeToIgnored(291461);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.AddEpisodeToIgnored(-1);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.AddEpisodeToIgnored(291461);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void RemoveEpisodeFromIgnored()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.RemoveEpisodeFromIgnored(291461);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.RemoveEpisodeFromIgnored(-1);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.RemoveEpisodeFromIgnored(291461);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
     }
 }
