@@ -11,6 +11,7 @@ namespace MyShows.Api.Constants
         public static readonly string UnmarkAsWatched = string.Format("profile/episodes/uncheck/{{{0}}}", Params.EpisodeId);
         public static readonly string Sync = string.Format("profile/shows/{{{0}}}/episodes", Params.ShowId);
         public static readonly string SetShowStatus = string.Format("profile/shows/{{{0}}}/{{{1}}}", Params.ShowId, Params.ShowStatus);
+        public static readonly string SetShowRating = string.Format("profile/shows/{{{0}}}/rate/{{{1}}}", Params.ShowId, Params.Rate);
         public const string ListOfPastEpisodes = "profile/episodes/unwatched/";
         public const string ListOfNextEpisodes = "profile/episodes/next/";
         public const string Auth = "profile/login";
@@ -32,6 +33,7 @@ namespace MyShows.Api.Constants
             public const string EpisodeId = "episodeId";
             public const string Image = "image";
             public const string Rating = "rating";
+            public const string Rate = "rate";
             public const string TotalEpisodes = "totalEpisodes";
             public const string WatchedEpisodes = "watchedEpisodes";
             public const string WatchStatus = "watchStatus";

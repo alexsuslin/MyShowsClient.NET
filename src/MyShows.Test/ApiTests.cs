@@ -171,5 +171,19 @@ namespace MyShows.Test
             response = Client.SetShowStatus(1, WatchStatus.Later);
             Assert.AreEqual(response.Status, Status.Success);
         }
+
+        [TestMethod]
+        public void SetShowRating()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.SetShowRating(1, Rating.Fair);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.SetShowRating(-1, Rating.Fair);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.SetShowRating(1, Rating.Fair);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
     }
 }

@@ -163,5 +163,13 @@ namespace MyShows.Api
             request.AddParameter(Methods.Params.ShowStatus, Show.WatchStatusToString(watchStatus), ParameterType.UrlSegment);
             return Execute(request);
         }
+
+        public MyShowsResponse SetShowRating(int showId, Rating rating)
+        {
+            RestRequest request = new RestRequest(Methods.SetShowRating);
+            request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.Rate, (int)rating, ParameterType.UrlSegment);
+            return Execute(request);
+        }
     }
 }
