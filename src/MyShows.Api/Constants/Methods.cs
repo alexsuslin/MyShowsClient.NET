@@ -4,8 +4,10 @@ namespace MyShows.Api.Constants
 {
     internal struct Methods
     {
-        public const string ListOfShows = "/profile/shows/";
-        public static readonly string ListOfWatchedEpisodes = string.Format("/profile/shows/{{{0}}}/", Params.ShowId);
+        public const string ListOfShows = "profile/shows/";
+        public static readonly string ListOfWatchedEpisodes = string.Format("profile/shows/{{{0}}}/", Params.ShowId);
+        public static readonly string MarkAsWatched = string.Format("profile/episodes/check/{{{0}}}", Params.EpisodeId);
+        public static readonly string UnmarkAsWatched = string.Format("profile/episodes/uncheck/{{{0}}}", Params.EpisodeId);
         public const string ListOfPastEpisodes = "profile/episodes/unwatched/";
         public const string ListOfNextEpisodes = "profile/episodes/next/";
         public const string Auth = "profile/login";

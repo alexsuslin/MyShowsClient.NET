@@ -104,5 +104,30 @@ namespace MyShows.Test
             foreach (Episode episode in response.Data)
                 Assert.IsNotNull(episode);
         }
+
+        [TestMethod]
+        public void MarkAsWatched()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.MarkAsWatched(291461);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.MarkAsWatched(291461);
+            Assert.AreEqual(response.Status, Status.Success);
+
+            response = Client.MarkAsWatched(291461, Rating.Excellent);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void UnmarkAsWatched()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.UnmarkAsWatched(291461);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.UnmarkAsWatched(291461);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
     }
 }

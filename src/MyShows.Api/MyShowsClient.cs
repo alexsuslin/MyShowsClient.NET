@@ -121,5 +121,21 @@ namespace MyShows.Api
             response.Data = new EpisodesCollection(myShowsResponse.Data);
             return response;
         }
+
+        public MyShowsResponse MarkAsWatched(int episodeId, Rating rating = Rating.None)
+        {
+            RestRequest request = new RestRequest(Methods.MarkAsWatched);
+            request.AddParameter(Methods.Params.EpisodeId, episodeId,ParameterType.UrlSegment);
+            if (rating != Rating.None)
+                request.AddParameter(Methods.Params.Rating, (int) rating);
+            return Execute(request);
+        }
+
+        public MyShowsResponse UnmarkAsWatched(int episodeId)
+        {
+            RestRequest request = new RestRequest(Methods.UnmarkAsWatched);
+            request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
+            return Execute(request);
+        }
     }
 }
