@@ -5,11 +5,8 @@ using MyShows.Api.Constants;
 namespace MyShows.Api.Objects
 {
     [DataContract]
-    public class WatchedEpisode
+    public class WatchedEpisode: EpisodeId
     {
-        [DataMember(Name = Methods.Params.Id)]
-        public int Id { get; set; }
-
         [DataMember(Name = Methods.Params.WatchDate)]
         protected internal string WatchDateParameter { get; set; }
 

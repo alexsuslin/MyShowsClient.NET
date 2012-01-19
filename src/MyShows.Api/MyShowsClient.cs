@@ -171,5 +171,19 @@ namespace MyShows.Api
             request.AddParameter(Methods.Params.Rate, (int)rating, ParameterType.UrlSegment);
             return Execute(request);
         }
+
+        public MyShowsResponse SetEpisodeRating(int episodeId, Rating rating)
+        {
+            RestRequest request = new RestRequest(Methods.SetEpisodeRating);
+            request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.Rate, (int)rating, ParameterType.UrlSegment);
+            return Execute(request);
+        }
+
+        public MyShowsResponse<EpisodeIdsCollection> GetFavoriteEpisodes()
+        {
+            RestRequest request = new RestRequest(Methods.GetFavoriteEpisodes);
+            return Execute<EpisodeIdsCollection>(request);
+        }
     }
 }

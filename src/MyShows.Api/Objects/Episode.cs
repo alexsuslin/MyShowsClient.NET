@@ -5,11 +5,8 @@ using MyShows.Api.Constants;
 namespace MyShows.Api.Objects
 {
     [DataContract]
-    public class Episode
+    public class Episode: EpisodeId
     {
-        [DataMember(Name = Methods.Params.EpisodeId)]
-        public int EpisodeId { get; set; }
-
         [DataMember(Name = Methods.Params.Title)]
         public string Title { get; set; }
 

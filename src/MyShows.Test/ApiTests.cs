@@ -5,7 +5,6 @@ using MyShows.Api.Objects;
 
 namespace MyShows.Test
 {
-
     [TestClass]
     public class ApiTests
     {
@@ -183,6 +182,31 @@ namespace MyShows.Test
             Assert.AreEqual(response.Status, Status.NotFound);
 
             response = Client.SetShowRating(1, Rating.Fair);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void SetEpisodeRating()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.SetEpisodeRating(291461, Rating.Fair);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.SetEpisodeRating(-1, Rating.Fair);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.SetEpisodeRating(291461, Rating.Fair);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void GetFavoriteEpisodes()
+        {
+            MyShowsResponse<EpisodeIdsCollection> response;
+            response = InvalidClient.GetFavoriteEpisodes();
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.GetFavoriteEpisodes();
             Assert.AreEqual(response.Status, Status.Success);
         }
     }

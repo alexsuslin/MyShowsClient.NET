@@ -52,6 +52,8 @@
     <Compile Include="MyShowsClient.cs" />
     <Compile Include="Objects\Credentials.cs" />
     <Compile Include="Objects\Episode.cs" />
+    <Compile Include="Objects\EpisodeId.cs" />
+    <Compile Include="Objects\EpisodeIdsCollection.cs" />
     <Compile Include="Objects\EpisodesCollection.cs" />
     <Compile Include="Objects\MyShowsResponse.cs" />
     <Compile Include="Objects\Show.cs" />
