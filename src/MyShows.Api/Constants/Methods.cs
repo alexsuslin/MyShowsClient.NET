@@ -6,6 +6,8 @@ namespace MyShows.Api.Constants
     {
         public const string ListOfShows = "/profile/shows/";
         public static readonly string ListOfWatchedEpisodes = string.Format("/profile/shows/{{{0}}}/", Params.ShowId);
+        public const string ListOfPastEpisodes = "profile/episodes/unwatched/";
+        public const string ListOfNextEpisodes = "profile/episodes/next/";
         public const string Auth = "profile/login";
 
         public struct Params

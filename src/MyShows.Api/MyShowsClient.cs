@@ -103,5 +103,23 @@ namespace MyShows.Api
             response.Data = new WatchedEpisodesCollection(myShowsResponse.Data);
             return response;
         }
+
+        public MyShowsResponse<EpisodesCollection> ListOfPastEpisodes()
+        {
+            RestRequest request = new RestRequest(Methods.ListOfPastEpisodes);
+            MyShowsResponse<Dictionary<int, Episode>> myShowsResponse = Execute<Dictionary<int, Episode>>(request);
+            MyShowsResponse<EpisodesCollection> response = new MyShowsResponse<EpisodesCollection>(myShowsResponse.Response);
+            response.Data = new EpisodesCollection(myShowsResponse.Data);
+            return response;
+        }
+
+        public MyShowsResponse<EpisodesCollection> ListOfNextEpisodes()
+        {
+            RestRequest request = new RestRequest(Methods.ListOfNextEpisodes);
+            MyShowsResponse<Dictionary<int, Episode>> myShowsResponse = Execute<Dictionary<int, Episode>>(request);
+            MyShowsResponse<EpisodesCollection> response = new MyShowsResponse<EpisodesCollection>(myShowsResponse.Response);
+            response.Data = new EpisodesCollection(myShowsResponse.Data);
+            return response;
+        }
     }
 }

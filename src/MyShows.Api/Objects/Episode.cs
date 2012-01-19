@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using MyShows.Api.Constants;
 
 namespace MyShows.Api.Objects
@@ -21,9 +22,8 @@ namespace MyShows.Api.Objects
         [DataMember(Name = Methods.Params.EpisodeNumber)]
         public int EpisodeNumber { get; set; }
 
-        //todo
         [DataMember(Name = Methods.Params.AirDate)]
-        public object AirDate { get; set; }
+        protected internal string AirDateParameter { get; set; }
 
         [DataMember(Name = Methods.Params.ProductionNumber)]
         public int ProductionNumber { get; set; }
@@ -42,5 +42,10 @@ namespace MyShows.Api.Objects
 
         [DataMember(Name = Methods.Params.ShortName)]
         public string ShortName { get; set; }
+
+        public DateTime? AirDate
+        {
+            get { return Helper.ParseDate(AirDateParameter); }
+        }
     }
 }

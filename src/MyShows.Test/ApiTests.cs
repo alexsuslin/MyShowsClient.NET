@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyShows.Api;
 using MyShows.Api.Constants;
 using MyShows.Api.Objects;
@@ -77,6 +75,34 @@ namespace MyShows.Test
                 Assert.IsNotNull(episode);
                 Assert.IsNotNull(episode.WatchDate);
             }
+        }
+
+        [TestMethod]
+        public void ListOfPastEpisodes()
+        {
+            MyShowsResponse<EpisodesCollection> response;
+            response = InvalidClient.ListOfPastEpisodes();
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.ListOfPastEpisodes();
+            Assert.AreEqual(response.Status, Status.Success);
+            Assert.IsNotNull(response.Data);
+            foreach (Episode episode in response.Data)
+                Assert.IsNotNull(episode);
+        }
+
+        [TestMethod]
+        public void ListOfNextEpisodes()
+        {
+            MyShowsResponse<EpisodesCollection> response;
+            response = InvalidClient.ListOfNextEpisodes();
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.ListOfNextEpisodes();
+            Assert.AreEqual(response.Status, Status.Success);
+            Assert.IsNotNull(response.Data);
+            foreach (Episode episode in response.Data)
+                Assert.IsNotNull(episode);
         }
     }
 }
