@@ -10,6 +10,7 @@ namespace MyShows.Api.Constants
         public static readonly string SyncMarkAsWatched = string.Format("profile/shows/{{{0}}}/sync", Params.ShowId);
         public static readonly string UnmarkAsWatched = string.Format("profile/episodes/uncheck/{{{0}}}", Params.EpisodeId);
         public static readonly string Sync = string.Format("profile/shows/{{{0}}}/episodes", Params.ShowId);
+        public static readonly string SetShowStatus = string.Format("profile/shows/{{{0}}}/{{{1}}}", Params.ShowId, Params.ShowStatus);
         public const string ListOfPastEpisodes = "profile/episodes/unwatched/";
         public const string ListOfNextEpisodes = "profile/episodes/next/";
         public const string Auth = "profile/login";

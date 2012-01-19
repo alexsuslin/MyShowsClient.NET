@@ -155,5 +155,13 @@ namespace MyShows.Api
             request.AddParameter(Methods.Params.Uncheck, Helper.ToCommaString(unwatchedEpisodes));
             return Execute(request);
         }
+
+        public MyShowsResponse SetShowStatus(int showId, WatchStatus watchStatus)
+        {
+            RestRequest request = new RestRequest(Methods.SetShowStatus);
+            request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.ShowStatus, Show.WatchStatusToString(watchStatus), ParameterType.UrlSegment);
+            return Execute(request);
+        }
     }
 }

@@ -157,5 +157,19 @@ namespace MyShows.Test
             response = Client.Sync(142, new[] { 16388, 16387 }, new[] { 16386 });
             Assert.AreEqual(response.Status, Status.Success);
         }
+
+        [TestMethod]
+        public void SetShowWatchedStatus()
+        {
+            MyShowsResponse response;
+            response = InvalidClient.SetShowStatus(1, WatchStatus.Later);
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.SetShowStatus(-1, WatchStatus.Later);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.SetShowStatus(1, WatchStatus.Later);
+            Assert.AreEqual(response.Status, Status.Success);
+        }
     }
 }

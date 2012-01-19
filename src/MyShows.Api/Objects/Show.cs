@@ -89,5 +89,26 @@ namespace MyShows.Api.Objects
 
         #endregion
 
+        #region Helper Methods
+
+        static internal protected string WatchStatusToString(WatchStatus status)
+        {
+            switch (status)
+            {
+                case WatchStatus.Watching:
+                    return Methods.Params.Watching;
+                case WatchStatus.Later:
+                    return Methods.Params.Later;
+                case WatchStatus.Cancelled:
+                    return Methods.Params.Cancelled;
+                case WatchStatus.Finished:
+                    return Methods.Params.Finished;
+                default:
+                    return string.Empty;
+
+            }
+        }
+
+        #endregion
     }
 }
