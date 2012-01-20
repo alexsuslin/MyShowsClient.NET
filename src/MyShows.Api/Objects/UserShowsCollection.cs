@@ -2,11 +2,11 @@
 
 namespace MyShows.Api.Objects
 {
-    public class ShowsCollection : List<Show>
+    public class UserShowsCollection: List<UserShow>
     {
         #region Constructor
 
-        internal ShowsCollection(Dictionary<int, Show> dic)
+        internal UserShowsCollection(Dictionary<int, UserShow> dic)
         {
             if (dic != null)
                 AddRange(Helper.ConvertToList(dic));

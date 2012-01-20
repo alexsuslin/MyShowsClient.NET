@@ -1,114 +1,95 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using MyShows.Api.Constants;
 
 namespace MyShows.Api.Objects
 {
     [DataContract]
-    public class Show
+    public class Show : UserShow
     {
-        #region Properties
+        private EpisodesCollection episodes;
 
-        [DataMember(Name = Methods.Params.ShowStatus)]
-        protected internal string StatusParameter { get; set; }
+        [DataMember(Name = Methods.Params.Id)]
+        protected internal int ID
+        {
+            get { return ShowId; }
+            set { ShowId = value; }
+        }
 
-        [DataMember(Name = Methods.Params.Rating)]
-        protected internal int RatingParameter { get; set; }
+        [DataMember(Name = Methods.Params.Status)]
+        protected internal string ShowStatus
+        {
+            get { return StatusParameter; }
+            set { StatusParameter = value; }
+        }
 
-        [DataMember(Name = Methods.Params.WatchStatus)]
-        public string WatchStatusParameter { get; set; }
+        [DataMember(Name = Methods.Params.Started)]
+        protected internal string StartedParameter { get; set; }
 
-        [DataMember(Name = Methods.Params.ShowId)]
-        public int ShowId { get; set; }
+        [DataMember(Name = Methods.Params.Ended)]
+        protected internal string EndedParameter { get; set; }
 
-        [DataMember(Name = Methods.Params.Title)]
-        public string Title { get; set; }
+        [DataMember(Name = Methods.Params.Genres)]
+        protected internal int[] GenresParameter { get; set; }
 
-        [DataMember(Name = Methods.Params.RuTitle)]
-        public string RuTitle { get; set; }
+        [DataMember(Name = Methods.Params.Country)]
+        public string Country { get; set; }
 
-        [DataMember(Name = Methods.Params.Runtime)]
-        public int Runtime { get; set; }
+        [DataMember(Name = Methods.Params.Year)]
+        public int year { get; set; }
 
-        [DataMember(Name = Methods.Params.WatchedEpisodes)]
-        public int WatchedEpisodes { get; set; }
+        [DataMember(Name = Methods.Params.KinopoiskId)]
+        public int? KinopoiskId { get; set; }
 
-        [DataMember(Name = Methods.Params.TotalEpisodes)]
-        public int TotalEpisodes { get; set; }
+        [DataMember(Name = Methods.Params.TVRageID)]
+        public int? TVRageID { get; set; }
 
-        [DataMember(Name = Methods.Params.Image)]
-        public string ImageUrl { get; set; }
+        [DataMember(Name = Methods.Params.IMDBID)]
+        public int? IMDBID { get; set; }
 
-        public ShowStatus Status
+        [DataMember(Name = Methods.Params.Watching)]
+        public int NumberOfWatching { get; set; }
+
+        [DataMember(Name = Methods.Params.Voted)]
+        public int NumberOfVotes { get; set; }
+
+        [DataMember(Name = Methods.Params.Place)]
+        public int place { get; set; }
+
+        [DataMember(Name = Methods.Params.Episodes)]
+        protected internal Dictionary<int, Episode> EpisodesParameter { get; set; }
+
+        public DateTime? Started
+        {
+            get { return Helper.ParseDate(StartedParameter); }
+        }
+
+        public DateTime? Ended
+        {
+            get { return Helper.ParseDate(EndedParameter); }
+        }
+
+        public double AverageRating
+        {
+            get { return RatingParameter; }
+        }
+
+        public List<Genre> Genres
         {
             get
             {
-                switch (StatusParameter)
-                {
-                    case Methods.Params.CanceledOrEnded:
-                        return ShowStatus.CanceledOrEnded;
-                    case Methods.Params.FinalSeason:
-                        return ShowStatus.FinalSeason;
-                    case Methods.Params.NewSeries:
-                        return ShowStatus.NewSeries;
-                    case Methods.Params.ReturiningSeries:
-                        return ShowStatus.ReturiningSeries;
-                    case Methods.Params.TBD:
-                        return ShowStatus.TBD;
-                    default:
-                        return ShowStatus.Unidentified;
-
-                }
+                return (from index in GenresParameter
+                        where GenresCollection.All.ContainsKey(index)
+                        select GenresCollection.All[index])
+                    .ToList();
             }
         }
 
-        public WatchStatus WatchStatus
+        public EpisodesCollection Episodes
         {
-            get
-            {
-                switch (WatchStatusParameter)
-                {
-                    case Methods.Params.Watching:
-                        return WatchStatus.Watching;
-                    case Methods.Params.Later:
-                        return WatchStatus.Later;
-                    case Methods.Params.Cancelled:
-                        return WatchStatus.Cancelled;
-                    case Methods.Params.Finished:
-                        return WatchStatus.Finished;
-                    default:
-                        return WatchStatus.None;
-
-                }
-            }
+            get { return episodes ?? (episodes = new EpisodesCollection(EpisodesParameter)); }
         }
-
-        public Rating Rating
-        {
-            get { return (Rating) RatingParameter; }
-        }
-
-        #endregion
-
-        #region Helper Methods
-
-        static internal protected string WatchStatusToString(WatchStatus status)
-        {
-            switch (status)
-            {
-                case WatchStatus.Watching:
-                    return Methods.Params.Watching;
-                case WatchStatus.Later:
-                    return Methods.Params.Later;
-                case WatchStatus.Cancelled:
-                    return Methods.Params.Cancelled;
-                case WatchStatus.Finished:
-                    return Methods.Params.Finished;
-                default:
-                    return string.Empty;
-
-            }
-        }
-
-        #endregion
     }
 }

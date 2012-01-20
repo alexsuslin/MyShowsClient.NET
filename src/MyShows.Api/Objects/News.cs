@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿
+using System.Runtime.Serialization;
 using MyShows.Api.Constants;
 
 namespace MyShows.Api.Objects
@@ -32,7 +33,7 @@ namespace MyShows.Api.Objects
         //todo I can add Series N and Episode N instead
         [DataMember(Name = Methods.Params.Episode)]
         public string Episode { get; set; }
-
+        
         //todo have a look if that can be different than 'watch'
         [DataMember(Name = Methods.Params.Action)]
         public string Action { get; set; }

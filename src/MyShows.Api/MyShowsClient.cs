@@ -86,12 +86,12 @@ namespace MyShows.Api
             return Execute(request);
         }
 
-        public MyShowsResponse<ShowsCollection>  ListOfShows()
+        public MyShowsResponse<UserShowsCollection>  ListOfShows()
         {
             RestRequest request = new RestRequest(Methods.ListOfShows);
-            MyShowsResponse<Dictionary<int, Show>> myShowsResponse = Execute<Dictionary<int, Show>>(request);
-            MyShowsResponse<ShowsCollection> response = new MyShowsResponse<ShowsCollection>(myShowsResponse.Response);
-            response.Data = new ShowsCollection(myShowsResponse.Data);
+            MyShowsResponse<Dictionary<int, UserShow>> myShowsResponse = Execute<Dictionary<int, UserShow>>(request);
+            MyShowsResponse<UserShowsCollection> response = new MyShowsResponse<UserShowsCollection>(myShowsResponse.Response);
+            response.Data = new UserShowsCollection(myShowsResponse.Data);
             return response;
         }
 
@@ -160,7 +160,7 @@ namespace MyShows.Api
         {
             RestRequest request = new RestRequest(Methods.SetShowStatus);
             request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
-            request.AddParameter(Methods.Params.ShowStatus, Show.WatchStatusToString(watchStatus), ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.ShowStatus, UserShow.WatchStatusToString(watchStatus), ParameterType.UrlSegment);
             return Execute(request);
         }
 
@@ -228,6 +228,32 @@ namespace MyShows.Api
             MyShowsResponse<NewsCollection> response = new MyShowsResponse<NewsCollection>(myShowsResponse.Response);
             response.Data = new NewsCollection(myShowsResponse.Data);
             return response;
+        }
+
+        public MyShowsResponse<ShowsCollection> Search(string q)
+        {
+            RestRequest request = new RestRequest(Methods.Search);
+            request.AddParameter(Methods.Params.Query.ToString(), q);
+            MyShowsResponse<Dictionary<int, Show>> myShowsResponse = Execute<Dictionary<int, Show>>(request);
+            MyShowsResponse<ShowsCollection> response = new MyShowsResponse<ShowsCollection>(myShowsResponse.Response);
+            response.Data = new ShowsCollection(myShowsResponse.Data);
+            return response;
+            
+        }
+
+        internal protected MyShowsResponse<Dictionary<int, Genre>> GetGenres()
+        {
+            RestRequest request = new RestRequest(Methods.GetGenres);
+            MyShowsResponse<Dictionary<int, Genre>> myShowsResponse = Execute<Dictionary<int, Genre>>(request);
+            return myShowsResponse;
+        }
+
+        public MyShowsResponse<FileSearchResult> SearchByFile(string q)
+        {
+            RestRequest request = new RestRequest(Methods.SearchByFile);
+            request.AddParameter(Methods.Params.Query.ToString(), q);
+            MyShowsResponse<FileSearchResult> myShowsResponse = Execute<FileSearchResult>(request);
+            return myShowsResponse;
         }
     }
 }

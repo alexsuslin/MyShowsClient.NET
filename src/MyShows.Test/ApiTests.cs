@@ -48,7 +48,7 @@ namespace MyShows.Test
         [TestMethod]
         public void ListOfShows()
         {
-            MyShowsResponse<ShowsCollection> response;
+            MyShowsResponse<UserShowsCollection> response;
 
             response = InvalidClient.ListOfShows();
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
@@ -56,7 +56,7 @@ namespace MyShows.Test
             response = Client.ListOfShows();
             Assert.AreEqual(response.Status, Status.Success);
             Assert.IsNotNull(response.Data);
-            foreach (Show show in response.Data)
+            foreach (UserShow show in response.Data)
             {
                 Assert.IsNotNull(show);
             }
@@ -294,6 +294,34 @@ namespace MyShows.Test
                 Assert.IsNotNull(pair);
                 Assert.AreEqual(true, pair.Value.Count > 0);
             }
+        }
+
+        [TestMethod]
+        public void Search()
+        {
+            MyShowsResponse<ShowsCollection> response;
+            response = Client.Search(string.Empty);
+            Assert.AreEqual(response.Status, Status.InvalidRequest);
+            
+            response = Client.Search("Theory");
+            Assert.AreEqual(response.Status, Status.Success);
+            foreach (Show show in response.Data)
+            {
+                Assert.IsNotNull(show);
+            }
+        }
+
+        [TestMethod]
+        public void SearchByFile()
+        {
+            MyShowsResponse<FileSearchResult> response;
+            response = Client.SearchByFile(string.Empty);
+            Assert.AreEqual(response.Status, Status.InvalidRequest);
+
+            response = Client.SearchByFile("Star.Wars.The.Clone.Wars.s02e01e02.rus.LostFilm.TV.avi");
+            Assert.AreEqual(response.Status, Status.Success);
+            Assert.IsNotNull(response.Data.Show.Episodes);
+            Assert.AreEqual(true, response.Data.Show.Episodes.Count > 0);
         }
     }
 }

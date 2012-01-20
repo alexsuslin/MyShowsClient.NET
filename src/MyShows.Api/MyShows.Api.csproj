@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Constants\Gender.cs" />
     <Compile Include="Constants\Header.cs" />
+    <Compile Include="Constants\Match.cs" />
     <Compile Include="Constants\Methods.cs" />
     <Compile Include="Constants\Rating.cs" />
     <Compile Include="Constants\ShowStatus.cs" />
@@ -56,11 +57,16 @@
     <Compile Include="Objects\EpisodeId.cs" />
     <Compile Include="Objects\EpisodeIdsCollection.cs" />
     <Compile Include="Objects\EpisodesCollection.cs" />
+    <Compile Include="Objects\FileSearchResult.cs" />
+    <Compile Include="Objects\Genre.cs" />
+    <Compile Include="Objects\GenresCollection.cs" />
     <Compile Include="Objects\MyShowsResponse.cs" />
     <Compile Include="Objects\News.cs" />
     <Compile Include="Objects\NewsCollection.cs" />
     <Compile Include="Objects\Show.cs" />
     <Compile Include="Objects\ShowsCollection.cs" />
+    <Compile Include="Objects\UserShow.cs" />
+    <Compile Include="Objects\UserShowsCollection.cs" />
     <Compile Include="Objects\WatchedEpisode.cs" />
     <Compile Include="Objects\WatchedEpisodesCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

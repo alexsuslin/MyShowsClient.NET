@@ -59,6 +59,11 @@ namespace MyShows.Api.Objects
         }
 
         #endregion
+
+        public IEnumerator<KeyValuePair<int, Genre>> GetEnumerator()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
 

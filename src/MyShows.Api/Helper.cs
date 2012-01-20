@@ -10,6 +10,8 @@ namespace MyShows.Api
 {
     internal static class Helper
     {
+        private static readonly string[] formats = { "dd.MM.yyyy", "MMM/yyyy", "yyyy", "MMM/dd/yyyy" };
+
         public static string GetMd5Hash(string input)
         {
             using (MD5 md5Hash = MD5.Create())
@@ -40,9 +42,8 @@ namespace MyShows.Api
 
         public static DateTime? ParseDate(string stringdate)
         {
-            const string format = "dd.MM.yyyy";
             DateTime date;
-            if (!DateTime.TryParseExact(stringdate, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+            if (!DateTime.TryParseExact(stringdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
                 return null;
             return date;
         }
