@@ -244,16 +244,28 @@ namespace MyShows.Api
         internal protected MyShowsResponse<Dictionary<int, Genre>> GetGenres()
         {
             RestRequest request = new RestRequest(Methods.GetGenres);
-            MyShowsResponse<Dictionary<int, Genre>> myShowsResponse = Execute<Dictionary<int, Genre>>(request);
-            return myShowsResponse;
+            return Execute<Dictionary<int, Genre>>(request);;
         }
 
         public MyShowsResponse<FileSearchResult> SearchByFile(string q)
         {
             RestRequest request = new RestRequest(Methods.SearchByFile);
             request.AddParameter(Methods.Params.Query.ToString(), q);
-            MyShowsResponse<FileSearchResult> myShowsResponse = Execute<FileSearchResult>(request);
-            return myShowsResponse;
+            return Execute<FileSearchResult>(request);;
+        }
+
+        public MyShowsResponse<ShowsCollection> TopRatedShows(RateFilter filter)
+        {
+            RestRequest request = new RestRequest(Methods.TopRatedShows);
+            request.AddParameter(Methods.Params.Gender, RateFilterParams.ToString(filter), ParameterType.UrlSegment);
+            return Execute<ShowsCollection>(request); 
+        }
+
+        public MyShowsResponse<UserProfile> GetProfile(string username)
+        {
+            RestRequest request = new RestRequest(Methods.UserProfile);
+            request.AddParameter(Methods.Params.Login, username, ParameterType.UrlSegment);
+            return Execute<UserProfile>(request);
         }
     }
 }

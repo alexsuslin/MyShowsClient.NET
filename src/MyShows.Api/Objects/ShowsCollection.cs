@@ -12,6 +12,8 @@ namespace MyShows.Api.Objects
                 AddRange(Helper.ConvertToList(dic));
         }
 
+        public ShowsCollection(){}
+
         #endregion
     }
 }

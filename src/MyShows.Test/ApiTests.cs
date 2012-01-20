@@ -323,5 +323,36 @@ namespace MyShows.Test
             Assert.IsNotNull(response.Data.Show.Episodes);
             Assert.AreEqual(true, response.Data.Show.Episodes.Count > 0);
         }
+
+        [TestMethod]
+        public void TopRatedShows()
+        {
+            MyShowsResponse<ShowsCollection> response;
+            response = Client.TopRatedShows(RateFilter.None);
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.TopRatedShows(RateFilter.All);
+            Assert.AreEqual(response.Status, Status.Success);
+            Assert.AreEqual(true, response.Data.Count > 0);
+
+            response = Client.TopRatedShows(RateFilter.Male);
+            Assert.AreEqual(response.Status, Status.Success);
+            Assert.AreEqual(true, response.Data.Count > 0);
+
+            response = Client.TopRatedShows(RateFilter.Female);
+            Assert.AreEqual(response.Status, Status.Success);
+            Assert.AreEqual(true, response.Data.Count > 0);
+        }
+
+        [TestMethod]
+        public void Profile()
+        {
+            MyShowsResponse<UserProfile> response;
+            response = Client.GetProfile("djs435fnd");
+            Assert.AreEqual(response.Status, Status.NotFound);
+
+            response = Client.GetProfile("alexsuslin");
+            Assert.AreEqual(response.Status, Status.Success);
+        }
     }
 }

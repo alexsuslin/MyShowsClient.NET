@@ -18,6 +18,8 @@ namespace MyShows.Api.Constants
         public const string GetFavoriteEpisodes = "profile/episodes/favorites/list/";
         public static readonly string AddEpisodeToIgnored = string.Format("profile/episodes/ignored/add/{{{0}}}", Params.EpisodeId);
         public static readonly string RemoveEpisodeFromIgnored = string.Format("profile/episodes/ignored/remove/{{{0}}}", Params.EpisodeId);
+        public static readonly string TopRatedShows = string.Format("shows/top/{{{0}}}/", Params.Gender);
+        public static readonly string UserProfile = string.Format("profile/{{{0}}}", Params.Login);
         public const string SearchByFile = "shows/search/file/";
         public const string Search = "shows/search/";
         public const string FriendsNews = "profile/news/";
@@ -32,6 +34,16 @@ namespace MyShows.Api.Constants
             public const char Female = 'f';
             public const char Male = 'm';
             public const char Query = 'q';
+            public const string WatchedHours = "watchedHours";
+            public const string RemainingHours = "remainingHours";
+            public const string RemainingEpisodes = "remainingEpisodes";
+            public const string RemainingDays = "remainingDays";
+            public const string WatchedDays = "watchedDays";
+            public const string Avatar = "avatar";
+            public const string WastedTime = "wastedTime";
+            public const string Friends = "friends";
+            public const string Followers = "followers";
+            public const string Stats = "stats";
             public const string Action = "action";
             public const string AirDate = "airDate";
             public const string CanceledOrEnded = "Canceled/Ended";
