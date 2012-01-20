@@ -221,5 +221,13 @@ namespace MyShows.Api
         }
 
 
+        public MyShowsResponse<NewsCollection> GetFriendsNews()
+        {
+            RestRequest request = new RestRequest(Methods.FriendsNews);
+            MyShowsResponse<Dictionary<string, List<News>>> myShowsResponse = Execute<Dictionary<string, List<News>>>(request);
+            MyShowsResponse<NewsCollection> response = new MyShowsResponse<NewsCollection>(myShowsResponse.Response);
+            response.Data = new NewsCollection(myShowsResponse.Data);
+            return response;
+        }
     }
 }

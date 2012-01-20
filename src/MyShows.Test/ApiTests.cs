@@ -1,7 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyShows.Api;
 using MyShows.Api.Constants;
 using MyShows.Api.Objects;
+using Newtonsoft.Json;
 
 namespace MyShows.Test
 {
@@ -275,6 +278,22 @@ namespace MyShows.Test
 
             response = Client.RemoveEpisodeFromIgnored(291461);
             Assert.AreEqual(response.Status, Status.Success);
+        }
+
+        [TestMethod]
+        public void FriendsNews()
+        {
+            MyShowsResponse<NewsCollection> response;
+            response = InvalidClient.GetFriendsNews();
+            Assert.AreEqual(response.Status, Status.AuthenticationRequired);
+
+            response = Client.GetFriendsNews();
+            Assert.AreEqual(response.Status, Status.Success);
+            foreach (KeyValuePair<DateTime, List<News>> pair in response.Data)
+            {
+                Assert.IsNotNull(pair);
+                Assert.AreEqual(true, pair.Value.Count > 0);
+            }
         }
     }
 }

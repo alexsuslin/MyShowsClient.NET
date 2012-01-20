@@ -42,6 +42,7 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\Gender.cs" />
     <Compile Include="Constants\Header.cs" />
     <Compile Include="Constants\Methods.cs" />
     <Compile Include="Constants\Rating.cs" />
@@ -56,6 +57,8 @@
     <Compile Include="Objects\EpisodeIdsCollection.cs" />
     <Compile Include="Objects\EpisodesCollection.cs" />
     <Compile Include="Objects\MyShowsResponse.cs" />
+    <Compile Include="Objects\News.cs" />
+    <Compile Include="Objects\NewsCollection.cs" />
     <Compile Include="Objects\Show.cs" />
     <Compile Include="Objects\ShowsCollection.cs" />
     <Compile Include="Objects\WatchedEpisode.cs" />

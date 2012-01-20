@@ -1,4 +1,6 @@
-﻿namespace MyShows.Api.Constants
+﻿using RestSharp;
+
+namespace MyShows.Api.Constants
 {
     internal struct Methods
     {
@@ -16,6 +18,7 @@
         public const string GetFavoriteEpisodes = "profile/episodes/favorites/list/";
         public static readonly string AddEpisodeToIgnored = string.Format("profile/episodes/ignored/add/{{{0}}}", Params.EpisodeId);
         public static readonly string RemoveEpisodeFromIgnored = string.Format("profile/episodes/ignored/remove/{{{0}}}", Params.EpisodeId);
+        public const string FriendsNews = "profile/news/";
         public const string GetIgnoredEpisodes = "profile/episodes/ignored/list/";
         public const string ListOfPastEpisodes = "profile/episodes/unwatched/";
         public const string ListOfNextEpisodes = "profile/episodes/next/";
@@ -23,6 +26,13 @@
 
         public struct Params
         {
+            public const char Male = 'm';
+            public const char Female = 'f';
+            public const string Action = "action";
+            public const string Episode = "episode";
+            public const string Gender = "gender";
+            public const string Login = "login";
+            public const string Show = "show";
             public const string Check = "check";
             public const string Uncheck = "uncheck";
             public const string Episodes = "episodes";
