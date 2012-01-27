@@ -34,7 +34,8 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\external\Newtonsoft.Json.4.0.5\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp">
+    <Reference Include="RestSharp, Version=102.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\external\RestSharp.102.5\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -56,22 +57,27 @@
     <Compile Include="Objects\Credentials.cs" />
     <Compile Include="Objects\Episode.cs" />
     <Compile Include="Objects\EpisodeId.cs" />
-    <Compile Include="Objects\EpisodeIdsCollection.cs" />
-    <Compile Include="Objects\EpisodesCollection.cs" />
     <Compile Include="Objects\FileSearchResult.cs" />
     <Compile Include="Objects\Genre.cs" />
     <Compile Include="Objects\GenresCollection.cs" />
+    <Compile Include="Objects\JsonUtilities\ApiJsonDeserializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Objects\JsonUtilities\CustomDateTimeConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Objects\JsonUtilities\MyShowsGenresConverter.cs" />
+    <Compile Include="Objects\JsonUtilities\ObjectsArrayConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Objects\MyShowsResponse.cs" />
     <Compile Include="Objects\News.cs" />
     <Compile Include="Objects\NewsCollection.cs" />
     <Compile Include="Objects\Show.cs" />
-    <Compile Include="Objects\ShowsCollection.cs" />
     <Compile Include="Objects\UserProfile.cs" />
     <Compile Include="Objects\UserShow.cs" />
-    <Compile Include="Objects\UserShowsCollection.cs" />
     <Compile Include="Objects\UserStats.cs" />
     <Compile Include="Objects\WatchedEpisode.cs" />
-    <Compile Include="Objects\WatchedEpisodesCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

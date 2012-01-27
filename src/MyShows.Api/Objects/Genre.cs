@@ -6,6 +6,8 @@ namespace MyShows.Api.Objects
     [DataContract]
     public class Genre
     {
+        #region Properties
+
         [DataMember(Name = Methods.Params.Id)]
         public int ID { get; set; }
 
@@ -14,5 +16,7 @@ namespace MyShows.Api.Objects
 
         [DataMember(Name = Methods.Params.RuTitle)]
         public string RuTitle { get; set; }
+
+        #endregion
     }
 }

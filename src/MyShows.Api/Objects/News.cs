@@ -1,6 +1,7 @@
-﻿
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using MyShows.Api.Constants;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MyShows.Api.Objects
 {
@@ -8,9 +9,6 @@ namespace MyShows.Api.Objects
     public class News
     {
         #region Properties
-
-        [DataMember(Name = Methods.Params.Gender)]
-        protected internal char GenderParameter { get; set; }
 
         [DataMember(Name = Methods.Params.EpisodeId)]
         public int? EpisodeId { get; set; }
@@ -38,23 +36,9 @@ namespace MyShows.Api.Objects
         [DataMember(Name = Methods.Params.Action)]
         public string Action { get; set; }
 
-        public Gender Gender
-        {
-            get
-            {
-                switch (GenderParameter)
-                {
-                    case Methods.Params.Male:
-                        return Gender.Male;
-                    case Methods.Params.Female:
-                        return Gender.Female;
-                    default:
-                        return Gender.None;
-                }
-            }
-        }
+        [DataMember(Name = Methods.Params.Gender), JsonConverter(typeof(StringEnumConverter))]
+        public Gender Gender { get; set; }
 
         #endregion
-
     }
 }

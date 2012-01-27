@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.Globalization;
+using System.Runtime.Serialization;
 using MyShows.Api.Constants;
 using MyShows.Api.Objects;
+using MyShows.Api.Objects.JsonUtilities;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace MyShows.Api
@@ -35,39 +39,41 @@ namespace MyShows.Api
 
         #endregion
 
-        #region Methods
-
-
-        #endregion
-
         #region Helper Methods
-
 
         private MyShowsResponse Execute(RestRequest request)
         {
             RestClient client = new RestClient(ApiUrl);
-            request = RequestSetup(request);
-            return new MyShowsResponse(client.Execute(request));
+            request = RequestSetup(client, request);
+            return client.Execute(request);
         }
 
-        private MyShowsResponse<T> Execute<T>(RestRequest request, Credentials cred = null) where T : new()
+        private MyShowsResponse<T> Execute<T>(RestRequest request) where T : new()
         {
             RestClient client = new RestClient(ApiUrl);
-            request = RequestSetup(request);
-            return new MyShowsResponse<T>(client.Execute<T>(request));
+            request = RequestSetup(client, request);
+            return client.Execute<T>(request);
         }
 
-        private RestRequest RequestSetup(RestRequest request)
+        private RestRequest RequestSetup(RestClient client, RestRequest request)
         {
-            //request.Resource = !request.Resource.EndsWith(".php") ? string.Format("{0}.php", request.Resource) : request.Resource;
             request.Method = Method.POST;
             request.RequestFormat = DataFormat.Json;
+
+            client.AddHandler("application/json", new ApiJsonDeserializer());
+            client.AddHandler("text/json", new ApiJsonDeserializer());
+            client.AddHandler("text/x-json", new ApiJsonDeserializer());
+            //why Myshows sends text/html when it should be json?
+            client.AddHandler("text/html", new ApiJsonDeserializer());
+            
             if(!string.IsNullOrEmpty(phpSessId))
                 request.AddCookie(Methods.Params.PhpSessionId, phpSessId);
             return request;
         }
 
         #endregion
+
+        #region Api Methods
 
         public MyShowsResponse Auth(Credentials cred = null)
         {
@@ -86,57 +92,51 @@ namespace MyShows.Api
             return Execute(request);
         }
 
-        public MyShowsResponse<UserShowsCollection>  ListOfShows()
+        [JsonObject,JsonConverter(typeof(ObjectsArrayConverter<UserShow>))]
+        public class Test<T>:List<T>
         {
-            RestRequest request = new RestRequest(Methods.ListOfShows);
-            MyShowsResponse<Dictionary<int, UserShow>> myShowsResponse = Execute<Dictionary<int, UserShow>>(request);
-            MyShowsResponse<UserShowsCollection> response = new MyShowsResponse<UserShowsCollection>(myShowsResponse.Response);
-            response.Data = new UserShowsCollection(myShowsResponse.Data);
-            return response;
+            
         }
 
-        public MyShowsResponse<WatchedEpisodesCollection> ListOfWatchedEpisodes(int showId)
+        public MyShowsResponse<List<UserShow>> ListOfShows()
+        {
+            RestRequest request = new RestRequest(Methods.ListOfShows);
+            return Execute<List<UserShow>>(request);
+        }
+
+        public MyShowsResponse<List<WatchedEpisode>> ListOfWatchedEpisodes(int showId)
         {
             RestRequest request = new RestRequest(Methods.ListOfWatchedEpisodes);
             request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
-            MyShowsResponse<Dictionary<int, WatchedEpisode>> myShowsResponse = Execute<Dictionary<int, WatchedEpisode>>(request);
-            MyShowsResponse<WatchedEpisodesCollection> response = new MyShowsResponse<WatchedEpisodesCollection>(myShowsResponse.Response);
-            response.Data = new WatchedEpisodesCollection(myShowsResponse.Data);
-            return response;
+            return Execute<List<WatchedEpisode>>(request);
         }
 
-        public MyShowsResponse<EpisodesCollection> ListOfPastEpisodes()
+        public MyShowsResponse<List<Episode>> ListOfPastEpisodes()
         {
             RestRequest request = new RestRequest(Methods.ListOfPastEpisodes);
-            MyShowsResponse<Dictionary<int, Episode>> myShowsResponse = Execute<Dictionary<int, Episode>>(request);
-            MyShowsResponse<EpisodesCollection> response = new MyShowsResponse<EpisodesCollection>(myShowsResponse.Response);
-            response.Data = new EpisodesCollection(myShowsResponse.Data);
-            return response;
+            return Execute<List<Episode>>(request);
         }
 
-        public MyShowsResponse<EpisodesCollection> ListOfNextEpisodes()
+        public MyShowsResponse<List<Episode>> ListOfNextEpisodes()
         {
             RestRequest request = new RestRequest(Methods.ListOfNextEpisodes);
-            MyShowsResponse<Dictionary<int, Episode>> myShowsResponse = Execute<Dictionary<int, Episode>>(request);
-            MyShowsResponse<EpisodesCollection> response = new MyShowsResponse<EpisodesCollection>(myShowsResponse.Response);
-            response.Data = new EpisodesCollection(myShowsResponse.Data);
-            return response;
+            return Execute<List<Episode>>(request);
         }
 
         public MyShowsResponse MarkAsWatched(int episodeId, Rating rating = Rating.None)
         {
             RestRequest request = new RestRequest(Methods.MarkAsWatched);
-            request.AddParameter(Methods.Params.EpisodeId, episodeId,ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
             if (rating != Rating.None)
                 request.AddParameter(Methods.Params.Rating, (int) rating);
             return Execute(request);
         }
 
-        public MyShowsResponse MarkAsWatched(int showId, params int[] episodes)
+        public MyShowsResponse MarkAsWatched(int showId, params int[] episodeIds)
         {
             RestRequest request = new RestRequest(Methods.SyncMarkAsWatched);
             request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
-            request.AddParameter(Methods.Params.Episodes, Helper.ToCommaString(episodes));
+            request.AddParameter(Methods.Params.Episodes, Helper.ToCommaString(episodeIds));
             return Execute(request);
         }
 
@@ -160,7 +160,8 @@ namespace MyShows.Api
         {
             RestRequest request = new RestRequest(Methods.SetShowStatus);
             request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
-            request.AddParameter(Methods.Params.ShowStatus, UserShow.WatchStatusToString(watchStatus), ParameterType.UrlSegment);
+            string statusString = watchStatus.GetAttributeValue<EnumMemberAttribute, string>(x => x.Value);
+            request.AddParameter(Methods.Params.ShowStatus, statusString, ParameterType.UrlSegment);
             return Execute(request);
         }
 
@@ -168,7 +169,7 @@ namespace MyShows.Api
         {
             RestRequest request = new RestRequest(Methods.SetShowRating);
             request.AddParameter(Methods.Params.ShowId, showId, ParameterType.UrlSegment);
-            request.AddParameter(Methods.Params.Rate, (int)rating, ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.Rate, (int) rating, ParameterType.UrlSegment);
             return Execute(request);
         }
 
@@ -176,14 +177,14 @@ namespace MyShows.Api
         {
             RestRequest request = new RestRequest(Methods.SetEpisodeRating);
             request.AddParameter(Methods.Params.EpisodeId, episodeId, ParameterType.UrlSegment);
-            request.AddParameter(Methods.Params.Rate, (int)rating, ParameterType.UrlSegment);
+            request.AddParameter(Methods.Params.Rate, (int) rating, ParameterType.UrlSegment);
             return Execute(request);
         }
 
-        public MyShowsResponse<EpisodeIdsCollection> GetFavoriteEpisodes()
+        public MyShowsResponse<List<EpisodeId>> GetFavoriteEpisodes()
         {
             RestRequest request = new RestRequest(Methods.GetFavoriteEpisodes);
-            return Execute<EpisodeIdsCollection>(request);
+            return Execute<List<EpisodeId>>(request);
         }
 
         public MyShowsResponse AddEpisodeToFavorite(int episodeId)
@@ -200,10 +201,10 @@ namespace MyShows.Api
             return Execute(request);
         }
 
-        public MyShowsResponse<EpisodeIdsCollection> GetIgnoredEpisodes()
+        public MyShowsResponse<List<EpisodeId>> GetIgnoredEpisodes()
         {
             RestRequest request = new RestRequest(Methods.GetIgnoredEpisodes);
-            return Execute<EpisodeIdsCollection>(request);
+            return Execute<List<EpisodeId>>(request);
         }
 
         public MyShowsResponse AddEpisodeToIgnored(int episodeId)
@@ -220,45 +221,41 @@ namespace MyShows.Api
             return Execute(request);
         }
 
-
-        public MyShowsResponse<NewsCollection> GetFriendsNews()
+        public MyShowsResponse<Dictionary<DateTime,List<News>>> GetFriendsNews()
         {
+            //todo check for the easier implementation
             RestRequest request = new RestRequest(Methods.FriendsNews);
             MyShowsResponse<Dictionary<string, List<News>>> myShowsResponse = Execute<Dictionary<string, List<News>>>(request);
-            MyShowsResponse<NewsCollection> response = new MyShowsResponse<NewsCollection>(myShowsResponse.Response);
-            response.Data = new NewsCollection(myShowsResponse.Data);
-            return response;
+            return new MyShowsResponse<Dictionary<DateTime, List<News>>>(myShowsResponse.Response) { Data = new NewsCollection(myShowsResponse.Data) };
         }
 
-        public MyShowsResponse<ShowsCollection> Search(string q)
+        public MyShowsResponse<List<Show>> Search(string q)
         {
             RestRequest request = new RestRequest(Methods.Search);
-            request.AddParameter(Methods.Params.Query.ToString(), q);
-            MyShowsResponse<Dictionary<int, Show>> myShowsResponse = Execute<Dictionary<int, Show>>(request);
-            MyShowsResponse<ShowsCollection> response = new MyShowsResponse<ShowsCollection>(myShowsResponse.Response);
-            response.Data = new ShowsCollection(myShowsResponse.Data);
-            return response;
-            
+            request.AddParameter(Methods.Params.Query.ToString(CultureInfo.InvariantCulture), q);
+            return Execute<List<Show>>(request);
+
         }
 
-        internal protected MyShowsResponse<Dictionary<int, Genre>> GetGenres()
+        protected internal MyShowsResponse<Dictionary<int, Genre>> GetGenres()
         {
             RestRequest request = new RestRequest(Methods.GetGenres);
-            return Execute<Dictionary<int, Genre>>(request);;
+            return Execute<Dictionary<int, Genre>>(request);
         }
 
         public MyShowsResponse<FileSearchResult> SearchByFile(string q)
         {
             RestRequest request = new RestRequest(Methods.SearchByFile);
-            request.AddParameter(Methods.Params.Query.ToString(), q);
-            return Execute<FileSearchResult>(request);;
+            request.AddParameter(Methods.Params.Query.ToString(CultureInfo.InvariantCulture), q);
+            return Execute<FileSearchResult>(request);
+            ;
         }
 
-        public MyShowsResponse<ShowsCollection> TopRatedShows(RateFilter filter)
+        public MyShowsResponse<List<Show>> TopRatedShows(RateFilter filter)
         {
             RestRequest request = new RestRequest(Methods.TopRatedShows);
             request.AddParameter(Methods.Params.Gender, RateFilterParams.ToString(filter), ParameterType.UrlSegment);
-            return Execute<ShowsCollection>(request); 
+            return Execute<List<Show>>(request);
         }
 
         public MyShowsResponse<UserProfile> GetProfile(string username)
@@ -267,5 +264,7 @@ namespace MyShows.Api
             request.AddParameter(Methods.Params.Login, username, ParameterType.UrlSegment);
             return Execute<UserProfile>(request);
         }
+
+        #endregion
     }
 }

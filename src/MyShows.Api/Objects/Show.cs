@@ -1,44 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using MyShows.Api.Constants;
+using MyShows.Api.Objects.JsonUtilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MyShows.Api.Objects
 {
     [DataContract]
     public class Show : UserShow
     {
-        private EpisodesCollection episodes;
+        #region Properties
 
         [DataMember(Name = Methods.Params.Id)]
-        protected internal int ID
+        public override int ID
         {
-            get { return ShowId; }
-            set { ShowId = value; }
+            get { return base.ID; }
+            set { base.ID = value; }
         }
-
-        [DataMember(Name = Methods.Params.Status)]
-        protected internal string ShowStatus
-        {
-            get { return StatusParameter; }
-            set { StatusParameter = value; }
-        }
-
-        [DataMember(Name = Methods.Params.Started)]
-        protected internal string StartedParameter { get; set; }
-
-        [DataMember(Name = Methods.Params.Ended)]
-        protected internal string EndedParameter { get; set; }
-
-        [DataMember(Name = Methods.Params.Genres)]
-        protected internal int[] GenresParameter { get; set; }
 
         [DataMember(Name = Methods.Params.Country)]
         public string Country { get; set; }
 
         [DataMember(Name = Methods.Params.Year)]
-        public int year { get; set; }
+        public int Year { get; set; }
 
         [DataMember(Name = Methods.Params.KinopoiskId)]
         public int? KinopoiskId { get; set; }
@@ -56,40 +42,23 @@ namespace MyShows.Api.Objects
         public int NumberOfVotes { get; set; }
 
         [DataMember(Name = Methods.Params.Place)]
-        public int place { get; set; }
+        public int Place { get; set; }
 
-        [DataMember(Name = Methods.Params.Episodes)]
-        protected internal Dictionary<int, Episode> EpisodesParameter { get; set; }
+        [DataMember(Name = Methods.Params.Started), JsonConverter(typeof (CustomDateTimeConverter))]
+        public DateTime? Started { get; set; }
 
-        public DateTime? Started
-        {
-            get { return Helper.ParseDate(StartedParameter); }
-        }
+        [DataMember(Name = Methods.Params.Ended), JsonConverter(typeof (CustomDateTimeConverter))]
+        public DateTime? Ended { get; set; }
 
-        public DateTime? Ended
-        {
-            get { return Helper.ParseDate(EndedParameter); }
-        }
+        [DataMember(Name = Methods.Params.Episodes), JsonConverter(typeof (ObjectsArrayConverter<Episode>))]
+        public List<Episode> Episodes { get; set; }
 
-        public double AverageRating
-        {
-            get { return RatingParameter; }
-        }
+        [DataMember(Name = Methods.Params.Status), JsonConverter(typeof (StringEnumConverter))]
+        public ShowStatus ShowStatus { get; set; }
 
-        public List<Genre> Genres
-        {
-            get
-            {
-                return (from index in GenresParameter
-                        where GenresCollection.All.ContainsKey(index)
-                        select GenresCollection.All[index])
-                    .ToList();
-            }
-        }
+        [DataMember(Name = Methods.Params.Genres), JsonConverter(typeof (MyShowsGenresConverter))]
+        public List<Genre> Genres { get; set; }
 
-        public EpisodesCollection Episodes
-        {
-            get { return episodes ?? (episodes = new EpisodesCollection(EpisodesParameter)); }
-        }
+        #endregion
     }
 }

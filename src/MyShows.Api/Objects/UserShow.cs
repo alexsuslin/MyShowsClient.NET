@@ -1,5 +1,8 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using MyShows.Api.Constants;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MyShows.Api.Objects
 {
@@ -8,17 +11,8 @@ namespace MyShows.Api.Objects
     {
         #region Properties
 
-        [DataMember(Name = Methods.Params.ShowStatus)]
-        protected internal string StatusParameter { get; set; }
-
-        [DataMember(Name = Methods.Params.Rating)]
-        protected internal double RatingParameter { get; set; }
-
-        [DataMember(Name = Methods.Params.WatchStatus)]
-        public string WatchStatusParameter { get; set; }
-
         [DataMember(Name = Methods.Params.ShowId)]
-        public int ShowId { get; set; }
+        public virtual int ID { get; set; }
 
         [DataMember(Name = Methods.Params.Title)]
         public string Title { get; set; }
@@ -38,75 +32,19 @@ namespace MyShows.Api.Objects
         [DataMember(Name = Methods.Params.Image)]
         public string ImageUrl { get; set; }
 
-        public ShowStatus Status
+        [DataMember(Name = Methods.Params.ShowStatus), JsonConverter(typeof(StringEnumConverter))]
+        public ShowStatus Status { get; set; }
+
+        [DataMember(Name = Methods.Params.WatchStatus), JsonConverter(typeof(StringEnumConverter))]
+        public WatchStatus WatchStatus { get; set; }
+        
+        [DataMember(Name = Methods.Params.Rating)]
+        public double AverageRating { get; set; }
+
+        public virtual Rating Rating
         {
-            get
-            {
-                switch (StatusParameter)
-                {
-                    case Methods.Params.CanceledOrEnded:
-                        return ShowStatus.CanceledOrEnded;
-                    case Methods.Params.FinalSeason:
-                        return ShowStatus.FinalSeason;
-                    case Methods.Params.NewSeries:
-                        return ShowStatus.NewSeries;
-                    case Methods.Params.ReturiningSeries:
-                        return ShowStatus.ReturiningSeries;
-                    case Methods.Params.TBD:
-                        return ShowStatus.TBD;
-                    default:
-                        return ShowStatus.Unidentified;
-
-                }
-            }
-        }
-
-        public WatchStatus WatchStatus
-        {
-            get
-            {
-                switch (WatchStatusParameter)
-                {
-                    case Methods.Params.Watching:
-                        return WatchStatus.Watching;
-                    case Methods.Params.Later:
-                        return WatchStatus.Later;
-                    case Methods.Params.Cancelled:
-                        return WatchStatus.Cancelled;
-                    case Methods.Params.Finished:
-                        return WatchStatus.Finished;
-                    default:
-                        return WatchStatus.None;
-
-                }
-            }
-        }
-
-        public Rating Rating
-        {
-            get { return (Rating) System.Math.Ceiling(RatingParameter); }
-        }
-
-        #endregion
-
-        #region Helper Methods
-
-        static internal protected string WatchStatusToString(WatchStatus status)
-        {
-            switch (status)
-            {
-                case WatchStatus.Watching:
-                    return Methods.Params.Watching;
-                case WatchStatus.Later:
-                    return Methods.Params.Later;
-                case WatchStatus.Cancelled:
-                    return Methods.Params.Cancelled;
-                case WatchStatus.Finished:
-                    return Methods.Params.Finished;
-                default:
-                    return string.Empty;
-
-            }
+            get { return (Rating) Convert.ToInt32(Math.Ceiling(AverageRating)); }
+            set { AverageRating = (int) value; }
         }
 
         #endregion

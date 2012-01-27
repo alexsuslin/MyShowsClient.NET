@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using MyShows.Api.Constants;
+using MyShows.Api.Objects.JsonUtilities;
+using Newtonsoft.Json;
 
 namespace MyShows.Api.Objects
 {
     [DataContract]
-    public class Episode: EpisodeId
+    public class Episode : EpisodeId
     {
+        #region Properties
+
         [DataMember(Name = Methods.Params.Title)]
         public string Title { get; set; }
 
@@ -18,9 +22,6 @@ namespace MyShows.Api.Objects
 
         [DataMember(Name = Methods.Params.EpisodeNumber)]
         public int EpisodeNumber { get; set; }
-
-        [DataMember(Name = Methods.Params.AirDate)]
-        protected internal string AirDateParameter { get; set; }
 
         [DataMember(Name = Methods.Params.ProductionNumber)]
         public int ProductionNumber { get; set; }
@@ -37,9 +38,11 @@ namespace MyShows.Api.Objects
         [DataMember(Name = Methods.Params.ShortName)]
         public string ShortName { get; set; }
 
-        public DateTime? AirDate
-        {
-            get { return Helper.ParseDate(AirDateParameter); }
-        }
+        [DataMember(Name = Methods.Params.AirDate), JsonConverter(typeof (CustomDateTimeConverter))]
+        public DateTime? AirDate { get; set; }
+
+        #endregion
+
     }
 }
+

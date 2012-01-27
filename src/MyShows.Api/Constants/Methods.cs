@@ -31,6 +31,8 @@ namespace MyShows.Api.Constants
 
         public struct Params
         {
+            public const string NeverAired = "Never Aired";
+            public const string OnHiatus = "On Hiatus";
             public const char Female = 'f';
             public const char Male = 'm';
             public const char Query = 'q';

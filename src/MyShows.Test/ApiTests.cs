@@ -48,7 +48,7 @@ namespace MyShows.Test
         [TestMethod]
         public void ListOfShows()
         {
-            MyShowsResponse<UserShowsCollection> response;
+            MyShowsResponse<List<UserShow>> response;
 
             response = InvalidClient.ListOfShows();
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
@@ -65,7 +65,7 @@ namespace MyShows.Test
         [TestMethod]
         public void ListOfWatchedEpisodes()
         {
-            MyShowsResponse<WatchedEpisodesCollection> response;
+            MyShowsResponse<List<WatchedEpisode>> response;
             response = InvalidClient.ListOfWatchedEpisodes(1);
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
 
@@ -82,7 +82,7 @@ namespace MyShows.Test
         [TestMethod]
         public void ListOfPastEpisodes()
         {
-            MyShowsResponse<EpisodesCollection> response;
+            MyShowsResponse<List<Episode>> response;
             response = InvalidClient.ListOfPastEpisodes();
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
 
@@ -96,7 +96,7 @@ namespace MyShows.Test
         [TestMethod]
         public void ListOfNextEpisodes()
         {
-            MyShowsResponse<EpisodesCollection> response;
+            MyShowsResponse<List<Episode>> response;
             response = InvalidClient.ListOfNextEpisodes();
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
 
@@ -205,7 +205,7 @@ namespace MyShows.Test
         [TestMethod]
         public void GetFavoriteEpisodes()
         {
-            MyShowsResponse<EpisodeIdsCollection> response;
+            MyShowsResponse<List<EpisodeId>> response;
             response = InvalidClient.GetFavoriteEpisodes();
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
 
@@ -244,7 +244,7 @@ namespace MyShows.Test
         [TestMethod]
         public void GetIgnoredEpisodes()
         {
-            MyShowsResponse<EpisodeIdsCollection> response;
+            MyShowsResponse<List<EpisodeId>> response;
             response = InvalidClient.GetIgnoredEpisodes();
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
 
@@ -283,7 +283,7 @@ namespace MyShows.Test
         [TestMethod]
         public void FriendsNews()
         {
-            MyShowsResponse<NewsCollection> response;
+            MyShowsResponse<Dictionary<DateTime,List<News>>> response;
             response = InvalidClient.GetFriendsNews();
             Assert.AreEqual(response.Status, Status.AuthenticationRequired);
 
@@ -299,7 +299,7 @@ namespace MyShows.Test
         [TestMethod]
         public void Search()
         {
-            MyShowsResponse<ShowsCollection> response;
+            MyShowsResponse<List<Show>> response;
             response = Client.Search(string.Empty);
             Assert.AreEqual(response.Status, Status.InvalidRequest);
             
@@ -327,7 +327,7 @@ namespace MyShows.Test
         [TestMethod]
         public void TopRatedShows()
         {
-            MyShowsResponse<ShowsCollection> response;
+            MyShowsResponse<List<Show>> response;
             response = Client.TopRatedShows(RateFilter.None);
             Assert.AreEqual(response.Status, Status.NotFound);
 
